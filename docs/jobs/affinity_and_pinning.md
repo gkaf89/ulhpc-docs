@@ -27,6 +27,29 @@ Typically the libraries used in HPC applications provide a high degree of contro
 
 ## Process and thread placement
 
+A call to `sbatch` or `salloc` in clusters with the Slurm scheduler allocates the resources for a job. To pin processes of your job to specific cores within each node you need to set binding option in each step of your job with `srun` or in raw calls to `mpirun`.
+
+### Binding processes to CPUs
+
+Task (process) are bound to cores with the `--cpu-bind=<bind>` option flag of `srun`. The bind option assigns a task to fixed _processor unit_ for the duration of a job step. The `<bind>` type of resource determines the processor unit where the task is bound and can be one of
+
+- `threads`: pinning tasks to threads,
+- `cores`: pinning tasks to cores,
+- `sockets`: pinning tasks to sockets,
+- `map_cpu:<list>`: custom binding of tasks with `<list>`, a comma-separated _list_ of CPUIDs, or
+- `mask_cpu:<list>`: custom binding of tasks with `<list>`, a comma-separated _mask_ of cores.
+
+The primary binding option is `mask_cpu`; all other methods generate a mask automatically.
+
+!!! warning "Interactions with allocation options"
+
+When setting the 
+
+=== "Pin on cores"
+
+In this example 2 tasks are requested and are 
+
+
 ## Examining the architecture of compute nodes
 
 You can extract detailed information for our clusters using the [Portable Hardware Locality (hwloc)](https://www.open-mpi.org/projects/hwloc/) package. The hardware locality modules are provided in UL HPC clusters by the `system/hwloc` [modules](/environment/modules). Let's examine the output of hardware locality in an Iris CPU node and how it is interpreted.
